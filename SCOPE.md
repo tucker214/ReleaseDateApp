@@ -65,8 +65,18 @@ In priority order — pull in only after the skeleton and core search/list work:
    listing all media sharing that tag.
 4. **Notifications** — scheduled/background job that emails users on an item's release date;
    flips `track.is_notified`.
-5. **FastAPI scraper service** — Python service to ingest/scrape real release data into Postgres.
-   Polyglot; only if backend + frontend spine is solid.
+
+The catalog is seeded with hand-written fixture data — no scraper in scope.
+
+## Out of scope (and why)
+
+- **FastAPI / Python service** — cut. Running FastAPI alongside Spring Boot to serve the same
+  REST API is an anti-pattern: duplicated routing/logic, two runtimes to deploy, no capability
+  gained. FastAPI would only earn a place doing a *different* job (e.g. a scraper), and scraping
+  is not in scope. Release Radar is **one backend: Spring + Postgres**.
+- The job's desire for Python/FastAPI experience is a **separate learning goal** — satisfy it
+  with a small standalone FastAPI exercise, not by wedging a second backend into this app. The
+  point of this week is the **web frontend**; two backends would steal that time.
 
 ## Next step
 

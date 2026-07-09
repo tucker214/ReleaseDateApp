@@ -1,0 +1,99 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+
+Table user {
+  id integer [pk]
+  username varchar
+  email varchar
+  password_hash varchar
+  date_joined datetime
+}
+
+Table media_item {
+  id integer [pk]
+  title varchar
+  release_date date
+  type varchar
+  genre varchar
+  description text
+}
+
+Table tag {
+  id integer [pk]
+  name varchar
+}
+
+Table media_tag {
+  id integer [pk]
+  tag_id integer [ref: > tag.id]
+  media_item_id integer [ref: > media_item.id]
+  Indexes {(tag_id, media_item_id) [unique]}
+}
+
+Table media_asset {
+  id integer [pk]
+  url varchar
+  type varchar
+  media_item_id integer [ref: > media_item.id]
+}
+
+Table game{
+  id integer [pk, ref: - media_item.id]
+  num_players varchar
+  supports_online bool
+  supports_offline bool
+}
+
+Table movie{
+  id integer [pk, ref: - media_item.id]
+  runtime int
+}
+
+Table season {
+  id integer [pk, ref: - media_item.id]
+  season_number integer
+  num_episodes integer
+  series_id integer [ref: > tv_series.id]
+
+}
+
+Table tv_series {
+  id integer [pk]
+  title varchar
+  genre varchar
+}
+
+Table company {
+  id integer [pk]
+  name varchar
+}
+
+Table media_company {
+  id integer [pk]
+  media_item_id integer [ref: > media_item.id]
+  company_id integer [ref: > company.id]
+  role varchar // developer, publisher, studio
+  Indexes {(media_item_id, company_id, role) [unique]}
+}
+
+Table platform {
+  id integer [pk]
+  name varchar
+}
+
+Table game_platform {
+  id integer [pk]
+  game_id integer [ref: > game.id]
+  platform_id integer [ref: > platform.id]
+  Indexes {(game_id, platform_id) [unique]}
+}
+
+Table track {
+  id integer [pk]
+  user_id integer [ref: > user.id]
+  media_item_id integer [ref: > media_item.id]
+  date_tracked date
+  is_notified bool
+}
